@@ -4,6 +4,8 @@ export const site = {
   shortName: "RAC VIT Chennai",
   tagline: "Service Above Self. Leadership Beyond Limits.",
   subtitle: "Building Leaders, Creating Impact, Transforming Communities.",
+  manifesto:
+    "A hundred students turning Service Above Self into clean shorelines, donated blood, and leaders who outlast us.",
   district: "RI District 3234",
   parentClub: "Rotary Club of Chennai Spotlight",
   chartered: 2019,
@@ -36,12 +38,12 @@ export interface NavItem {
   target: string; // "#id" = section on home; "/path" = separate route
 }
 
-/** Club/Team/Projects/Events/Gallery scroll to sections on the single page.
- *  About and Contact are their own routes. */
+/** Team/Events/Gallery scroll to sections on the single page.
+ *  About and Contact are their own routes. Club and Projects stay on the
+ *  home scroll but are deliberately left off the nav (visitors reach them
+ *  naturally while scrolling; not every section needs a jump link). */
 export const nav: NavItem[] = [
-  { label: "Club", target: "#club" },
   { label: "Team", target: "#team" },
-  { label: "Projects", target: "#projects" },
   { label: "Events", target: "#events" },
   { label: "Gallery", target: "#gallery" },
   { label: "About", target: "/about" },

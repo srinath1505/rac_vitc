@@ -34,6 +34,14 @@ export function seededRandom(seed: string): number {
 export const seededRange = (seed: string, min: number, max: number) =>
   min + seededRandom(seed) * (max - min);
 
+/** "2026-07-18" -> "Sat, 18 Jul". */
+export const formatEventDate = (iso: string) =>
+  new Date(`${iso}T00:00:00`).toLocaleDateString("en-IN", {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+  });
+
 /** Deterministic LOCAL image from the bundled /public pools. */
 export const FACE_COUNT = 20;
 export const SCENE_COUNT = 24;

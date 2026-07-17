@@ -55,11 +55,22 @@
   --font-mono: var(--font-mono), ui-monospace, monospace;
 }
 
+/* Horizontal-scroll guard lives on html ONLY. Root overflow propagates to the
+   viewport (a special case in the overflow spec), so this doesn't create a
+   real scroll container. Repeating it on body as well (as this used to)
+   makes body its own separate, genuine overflow:auto scroll box — since all
+   actual scrolling happens via the propagated viewport instead, body's own
+   scrollTop never moves, and every position:sticky descendant (Hero, Kadal
+   Karai, Team, Four-Way Test, Modal headers) computes against that inert
+   container and never sticks. */
+html {
+  overflow-x: hidden;
+}
+
 html,
 body {
   background-color: var(--paper);
   color: var(--ink);
-  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   font-feature-settings: "kern", "liga", "cv11";

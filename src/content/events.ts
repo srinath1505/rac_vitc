@@ -59,3 +59,11 @@ export const events: ClubEvent[] = [
     type: "past",
   },
 ];
+
+/** Nearest upcoming Kadal Karai date — lets the Signature Projects section
+ *  (§5.9) cross-link to a real entry on the events calendar instead of
+ *  floating disconnected from it. */
+export const nextKadalKaraiEvent =
+  events
+    .filter((e) => e.type === "upcoming" && e.title.toLowerCase().includes("kadal karai"))
+    .sort((a, b) => a.date.localeCompare(b.date))[0] ?? null;

@@ -4,6 +4,7 @@ import Stats from "@/components/sections/Stats";
 import Avenues from "@/components/sections/Avenues";
 import TeamScroll from "@/components/sections/TeamScroll";
 import KadalKaraiScene from "@/components/sections/KadalKaraiScene";
+import BeforeAfterSlider from "@/components/sections/BeforeAfterSlider";
 import EventsCalendar from "@/components/sections/EventsCalendar";
 import GalleryWall from "@/components/gallery/GalleryWall";
 import GrowthTree from "@/components/club/GrowthTree";
@@ -13,18 +14,15 @@ import FAQ from "@/components/sections/FAQ";
 import Section from "@/components/ui/Section";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Reveal from "@/components/motion/Reveal";
-import WordReveal from "@/components/motion/WordReveal";
 import ScrollMarquee from "@/components/motion/ScrollMarquee";
-import Parallax from "@/components/motion/Parallax";
 import { ImageScatter } from "@/components/ui/ImageScatter";
 import { DiagonalCarousel } from "@/components/ui/DiagonalCarousel";
 import { AnimatedTooltip } from "@/components/ui/AnimatedTooltip";
-import Placeholder from "@/components/ui/Placeholder";
 import Button from "@/components/ui/Button";
 import { scatterSets } from "@/content/gallery";
-import { events } from "@/content/events";
+import { events, nextKadalKaraiEvent } from "@/content/events";
 import { signatureProject } from "@/content/projects";
-import { sceneUrl } from "@/lib/utils";
+import { sceneUrl, formatEventDate } from "@/lib/utils";
 import { Leaf, Calendar, Award, Waves, ArrowRight } from "lucide-react";
 
 const eventSlides = events.map((e) => ({ src: sceneUrl(e.id), title: e.title }));
@@ -33,13 +31,6 @@ export default function Home() {
   return (
     <>
       <IronhillHero />
-
-      {/* Centered manifesto (Ironhill-style word reveal) */}
-      <section className="flex min-h-[85vh] items-center justify-center px-6">
-        <WordReveal as="h2" className="u-display mx-auto max-w-5xl text-center text-[clamp(1.9rem,4.8vw,4rem)] leading-[1.12] text-ink">
-          A hundred students turning Service Above Self into clean shorelines, donated blood, and leaders who outlast us.
-        </WordReveal>
-      </section>
 
       <Stats />
 
@@ -92,20 +83,35 @@ export default function Home() {
                 <span className="flex items-center gap-2 rounded-full border border-line px-4 py-2 text-sm text-ink"><Award className="h-4 w-4 text-gold" /> South Asia award winner</span>
                 <span className="flex items-center gap-2 rounded-full border border-line px-4 py-2 text-sm text-ink"><Waves className="h-4 w-4 text-fern" /> Chennai coastline</span>
               </div>
+
+              {nextKadalKaraiEvent && (
+                <div className="mt-2 flex flex-wrap items-center gap-4 rounded-2xl border border-line bg-paper-2 p-5">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-fern/10 text-fern">
+                    <Calendar className="h-5 w-5" />
+                  </span>
+                  <div className="flex flex-col">
+                    <span className="font-mono text-[0.65rem] uppercase tracking-widest text-fern">Next cleanup</span>
+                    <span className="text-ink">
+                      {formatEventDate(nextKadalKaraiEvent.date)} · {nextKadalKaraiEvent.time} · {nextKadalKaraiEvent.location}
+                    </span>
+                  </div>
+                  <Button href="/#events" variant="outline" size="sm" className="sm:ml-auto">
+                    Reserve your spot <ArrowRight className="h-4 w-4" />
+                  </Button>
+                </div>
+              )}
+
               <div className="mt-2">
                 <Button href="/#join" variant="primary" magnetic cursor="join">Join a cleanup <ArrowRight className="h-4 w-4" /></Button>
               </div>
             </Reveal>
             <div className="lg:col-span-5">
-              <div className="grid grid-cols-2 gap-3">
-                {["kadal-a", "kadal-b", "kadal-c"].map((seed, i) => (
-                  <div key={seed} className={`overflow-hidden rounded-2xl border border-line ${i === 0 ? "col-span-2 aspect-[16/10]" : "aspect-square"}`}>
-                    <Parallax speed={0.1} className="h-[126%] -mt-[13%]">
-                      <Placeholder seed={seed} label="Kadal Karai" kind="scene" className="h-full w-full" />
-                    </Parallax>
-                  </div>
-                ))}
-              </div>
+              <BeforeAfterSlider
+                beforeSeed="kadal-before"
+                afterSeed="kadal-after"
+                beforeLabel="Before the drive"
+                afterLabel="After the drive"
+              />
             </div>
           </div>
         </Section>

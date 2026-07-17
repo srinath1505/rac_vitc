@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { stopScroll, startScroll } from "@/lib/lenis";
@@ -18,10 +18,14 @@ interface Props {
 /** Accessible modal: focus-trapped, Esc/backdrop close, locks smooth scroll. */
 export default function Modal({ open, onClose, title, children, variant = "side", className }: Props) {
   const panelRef = useRef<HTMLDivElement>(null);
-  const mounted = useRef(false);
+  // Portals can't render on the server (no document.body); gate with state
+  // (not a ref) so the client's first hydration pass also renders null,
+  // matching the server, and only switches to the real portal on a genuine
+  // re-render afterward — a ref mutation alone wouldn't trigger that re-render.
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    mounted.current = true;
+    setMounted(true);
   }, []);
 
   useEffect(() => {
@@ -58,8 +62,7 @@ export default function Modal({ open, onClose, title, children, variant = "side"
     };
   }, [open, onClose]);
 
-  if (!mounted.current && typeof window === "undefined") return null;
-  if (typeof document === "undefined") return null;
+  if (!mounted) return null;
 
   return createPortal(
     <div
