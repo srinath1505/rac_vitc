@@ -6,6 +6,12 @@ import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { useIsomorphicLayoutEffect } from "@/hooks/useIsomorphicLayoutEffect";
 import { mapRange } from "@/lib/utils";
 import ClubTimeline from "./ClubTimeline";
+import SectionHeading from "@/components/ui/SectionHeading";
+import Eyebrow from "@/components/ui/Eyebrow";
+
+const ABOUT_TITLE = "Eight years, root to canopy.";
+const ABOUT_INTRO =
+  "Chartered in 2019 and growing ever since — watch the seed we planted become the tree we are today, one year at a time.";
 
 const COUNT = clubTimeline.length;
 
@@ -89,7 +95,21 @@ export default function GrowthTree() {
     return () => ctx.revert();
   }, [mode]);
 
-  if (mode === "fallback") return <ClubTimeline />;
+  if (mode === "fallback") {
+    return (
+      <div className="u-container">
+        <SectionHeading
+          eyebrow="About the Club"
+          number="01"
+          title={ABOUT_TITLE}
+          intro={ABOUT_INTRO}
+          align="center"
+          className="mb-16"
+        />
+        <ClubTimeline />
+      </div>
+    );
+  }
 
   const entry = clubTimeline[active];
   const color = yearColor(active);
@@ -97,8 +117,16 @@ export default function GrowthTree() {
 
   return (
     <div ref={sectionRef} className="relative">
-      <div ref={stageRef} className="flex h-screen items-center overflow-hidden">
-        <div className="u-container grid w-full grid-cols-12 items-center gap-10">
+      <div ref={stageRef} className="flex h-screen flex-col overflow-hidden py-8 sm:py-10">
+        {/* Heading lives inside the pinned stage so it stays on screen for the
+            whole scrub instead of scrolling away above the pin. */}
+        <div className="u-container w-full">
+          <Eyebrow number="01">About the Club</Eyebrow>
+          <h2 className="u-display mt-2 max-w-2xl text-[clamp(1.5rem,3.2vw,2.5rem)] text-ink">{ABOUT_TITLE}</h2>
+          <p className="mt-2 max-w-xl text-sm leading-relaxed text-ink-soft">{ABOUT_INTRO}</p>
+        </div>
+
+        <div className="u-container grid w-full flex-1 grid-cols-12 items-center gap-10">
           {/* Video panel - framed, not seamless: the footage's own studio
               backdrop doesn't match the page's cream tone, so it reads as a
               deliberate panel (rounded, shadowed) rather than pretending to

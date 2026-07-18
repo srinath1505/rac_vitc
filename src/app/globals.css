@@ -103,6 +103,17 @@ body {
   background: var(--fern);
 }
 
+/* When the custom vine ScrollRail is active (fine pointer, desktop, motion
+   allowed), hide the native scrollbar so the two indicators don't compete.
+   Falls back to the native gradient-thumb bar everywhere else (touch,
+   reduced motion, off the home page). */
+html.has-scroll-rail {
+  scrollbar-width: none;
+}
+html.has-scroll-rail::-webkit-scrollbar {
+  display: none;
+}
+
 /* ---------- Lenis smooth scroll ---------- */
 html.lenis,
 html.lenis body {
@@ -185,6 +196,41 @@ html.lenis body {
 .has-custom-cursor,
 .has-custom-cursor * {
   cursor: none !important;
+}
+
+/* ---------- Gallery: cork notice board ---------- */
+.u-corkboard {
+  position: relative;
+  background-color: #c9a36a;
+  background-image:
+    radial-gradient(circle at 25% 15%, rgba(90, 60, 30, 0.18) 0 1.5px, transparent 2px),
+    radial-gradient(circle at 62% 40%, rgba(90, 60, 30, 0.14) 0 1.5px, transparent 2px),
+    radial-gradient(circle at 82% 74%, rgba(90, 60, 30, 0.16) 0 1.5px, transparent 2px),
+    radial-gradient(circle at 40% 86%, rgba(90, 60, 30, 0.12) 0 1.5px, transparent 2px),
+    radial-gradient(circle at 12% 60%, rgba(120, 150, 80, 0.1) 0 1.5px, transparent 2px),
+    linear-gradient(160deg, #d0ab73, #ba9053);
+  background-size: 90px 90px, 120px 120px, 70px 70px, 140px 140px, 100px 100px, 100% 100%;
+}
+/* corky mottled grain on top */
+.u-corkboard::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  opacity: 0.42;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23c)'/%3E%3C/svg%3E");
+}
+
+/* Damped "pluck" wobble — pin removed, paper waves from the bottom up. */
+@keyframes gw-pluck {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(-3deg); }
+  50% { transform: rotate(2.2deg); }
+  72% { transform: rotate(-1.2deg); }
+  88% { transform: rotate(0.5deg); }
+  100% { transform: rotate(0deg); }
 }
 
 /* ============================================================

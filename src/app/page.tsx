@@ -9,12 +9,15 @@ import EventsCalendar from "@/components/sections/EventsCalendar";
 import GalleryWall from "@/components/gallery/GalleryWall";
 import GrowthTree from "@/components/club/GrowthTree";
 import RegistrationBlock from "@/components/sections/RegistrationBlock";
+import JoinJourney from "@/components/sections/JoinJourney";
 import PartnerTeaser from "@/components/sections/PartnerTeaser";
 import FAQ from "@/components/sections/FAQ";
 import Section from "@/components/ui/Section";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Reveal from "@/components/motion/Reveal";
 import ScrollMarquee from "@/components/motion/ScrollMarquee";
+import SectionDivider from "@/components/motion/SectionDivider";
+import CurtainWipe from "@/components/motion/CurtainWipe";
 import { ImageScatter } from "@/components/ui/ImageScatter";
 import { DiagonalCarousel } from "@/components/ui/DiagonalCarousel";
 import { AnimatedTooltip } from "@/components/ui/AnimatedTooltip";
@@ -23,7 +26,7 @@ import { scatterSets } from "@/content/gallery";
 import { events, nextKadalKaraiEvent } from "@/content/events";
 import { signatureProject } from "@/content/projects";
 import { sceneUrl, formatEventDate } from "@/lib/utils";
-import { Leaf, Calendar, Award, Waves, ArrowRight } from "lucide-react";
+import { Calendar, Award, Waves, ArrowRight } from "lucide-react";
 
 const eventSlides = events.map((e) => ({ src: sceneUrl(e.id), title: e.title }));
 
@@ -34,20 +37,9 @@ export default function Home() {
 
       <Stats />
 
-      {/* CLUB — Growth Tree showpiece */}
+      {/* CLUB — Growth Tree showpiece (heading lives inside the pinned stage) */}
       <Section id="club" band="alt" container={false}>
-        <div className="u-container">
-          <SectionHeading
-            eyebrow="About the Club"
-            number="01"
-            title="Eight years, root to canopy."
-            intro="Chartered in 2019 and growing ever since — watch the seed we planted become the tree we are today, one year at a time."
-            align="center"
-          />
-        </div>
-        <div className="mt-16">
-          <GrowthTree />
-        </div>
+        <GrowthTree />
       </Section>
 
       {/* Scroll-driven marquee transition */}
@@ -68,6 +60,9 @@ export default function Home() {
       <section id="team">
         <TeamScroll />
       </section>
+
+      {/* Signature curtain wipe — a dramatic beat leading into Kadal Karai */}
+      <CurtainWipe />
 
       {/* PROJECTS — Kadal Karai cinematic + detail */}
       <section id="projects">
@@ -120,13 +115,17 @@ export default function Home() {
       {/* EVENTS — diagonal carousel of highlights + calendar */}
       <Section id="events" band="alt">
         <SectionHeading eyebrow="Events" number="05" title="What's happening at the club." intro="Browse the calendar for upcoming drives and past highlights. Hover a marked date for details." />
-        <div className="mt-12 h-[62vh] w-full">
-          <DiagonalCarousel items={eventSlides} slideSize={280} />
-        </div>
-        <div className="mt-14">
-          <EventsCalendar />
-        </div>
+        <Reveal y={20}>
+          <div className="mt-8 h-[32vh] w-full sm:h-[36vh]">
+            <DiagonalCarousel items={eventSlides} slideSize={240} />
+          </div>
+          <div className="mt-10">
+            <EventsCalendar />
+          </div>
+        </Reveal>
       </Section>
+
+      <SectionDivider tone="paper" />
 
       {/* GALLERY — image-scatter preview + polaroid wall */}
       <Section id="gallery" container={false}>
@@ -140,6 +139,8 @@ export default function Home() {
           <GalleryWall />
         </div>
       </Section>
+
+      <SectionDivider tone="paper-2" />
 
       {/* JOIN — Green Rotaractors */}
       <section id="join">
@@ -156,27 +157,22 @@ export default function Home() {
               </p>
               <p className="mt-4 max-w-md text-ink-soft">{greenRotaractors.closing}</p>
             </div>
-            <Reveal stagger={0.09} className="flex flex-col gap-4 lg:col-span-7">
-              {greenRotaractors.opportunities.map((o) => (
-                <div key={o} className="flex items-start gap-4 rounded-2xl border border-line bg-paper p-6">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-fern/10 text-fern">
-                    <Leaf className="h-5 w-5" />
-                  </span>
-                  <p className="text-ink">{o}</p>
-                </div>
-              ))}
-            </Reveal>
+            <div className="lg:col-span-7">
+              <JoinJourney />
+            </div>
           </div>
         </Section>
         <RegistrationBlock />
       </section>
 
-      {/* PARTNER */}
-      <div id="partner">
+      {/* PARTNER — sticks in place while FAQ slides over it (stacking moment) */}
+      <div id="partner" className="sticky top-0 z-0">
         <PartnerTeaser />
       </div>
 
-      <FAQ limit={6} />
+      <div className="relative z-10 rounded-t-[3rem] bg-paper shadow-[0_-40px_80px_-40px_rgba(26,26,26,0.35)]">
+        <FAQ limit={6} />
+      </div>
     </>
   );
 }

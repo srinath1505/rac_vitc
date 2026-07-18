@@ -46,6 +46,7 @@ export default function Reveal({
         delay,
         ease: EASE.out,
         stagger: stagger ?? 0,
+        immediateRender: false,
         scrollTrigger: { trigger: el, start, once: true },
       });
     }, ref);

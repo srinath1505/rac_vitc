@@ -4,6 +4,7 @@ import "./globals.css";
 import { site } from "@/content/site";
 import SmoothScroll from "@/components/layout/SmoothScroll";
 import CustomCursor from "@/components/layout/CustomCursor";
+import ScrollRail from "@/components/layout/ScrollRail";
 import Preloader from "@/components/layout/Preloader";
 import PageTransition from "@/components/layout/PageTransition";
 import Navbar from "@/components/layout/Navbar";
@@ -83,6 +84,7 @@ export default function RootLayout({
         <PageTransition />
         <SmoothScroll />
         <CustomCursor />
+        <ScrollRail />
         <Navbar />
 
         <main id="main" className="relative">

@@ -43,26 +43,26 @@ export default function EventsCalendar() {
   const cancelClose = () => { if (closeTimer.current) clearTimeout(closeTimer.current); };
 
   return (
-    <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+    <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
       {/* Calendar */}
-      <div className="overflow-hidden rounded-[2rem] border border-line bg-paper-2 lg:col-span-7">
-        <div className="flex items-center justify-between border-b border-line bg-paper px-8 py-6">
-          <div className="flex items-baseline gap-3">
-            <h3 className="font-display text-3xl text-ink">{MONTHS[month]}</h3>
-            <span className="font-mono text-sm text-ink-faint">{year}</span>
+      <div className="overflow-hidden rounded-2xl border border-line bg-paper-2 lg:col-span-5">
+        <div className="flex items-center justify-between border-b border-line bg-paper px-5 py-4">
+          <div className="flex items-baseline gap-2">
+            <h3 className="font-display text-xl text-ink">{MONTHS[month]}</h3>
+            <span className="font-mono text-xs text-ink-faint">{year}</span>
           </div>
-          <div className="flex gap-2">
-            <button onClick={() => setCursor(new Date(year, month - 1, 1))} aria-label="Previous month" data-cursor="link" className="flex h-10 w-10 items-center justify-center rounded-full border border-line transition-colors hover:bg-ink hover:text-paper"><ChevronLeft className="h-4 w-4" /></button>
-            <button onClick={() => setCursor(new Date(year, month + 1, 1))} aria-label="Next month" data-cursor="link" className="flex h-10 w-10 items-center justify-center rounded-full border border-line transition-colors hover:bg-ink hover:text-paper"><ChevronRight className="h-4 w-4" /></button>
+          <div className="flex gap-1.5">
+            <button onClick={() => setCursor(new Date(year, month - 1, 1))} aria-label="Previous month" data-cursor="link" className="flex h-8 w-8 items-center justify-center rounded-full border border-line transition-colors hover:bg-ink hover:text-paper"><ChevronLeft className="h-3.5 w-3.5" /></button>
+            <button onClick={() => setCursor(new Date(year, month + 1, 1))} aria-label="Next month" data-cursor="link" className="flex h-8 w-8 items-center justify-center rounded-full border border-line transition-colors hover:bg-ink hover:text-paper"><ChevronRight className="h-3.5 w-3.5" /></button>
           </div>
         </div>
 
-        <div className="p-6 sm:p-8">
-          <div className="mb-3 grid grid-cols-7 gap-2 text-center">
-            {DOW.map((d, i) => <span key={i} className="font-mono text-[0.65rem] uppercase tracking-widest text-ink-faint">{d.slice(0, 2)}</span>)}
+        <div className="p-4">
+          <div className="mb-2 grid grid-cols-7 gap-1.5 text-center">
+            {DOW.map((d, i) => <span key={i} className="font-mono text-[0.6rem] uppercase tracking-widest text-ink-faint">{d.slice(0, 2)}</span>)}
           </div>
-          <div className="grid grid-cols-7 gap-2">
-            {Array.from({ length: firstDay }).map((_, i) => <div key={`e-${i}`} className="aspect-square" />)}
+          <div className="grid grid-cols-7 gap-1.5">
+            {Array.from({ length: firstDay }).map((_, i) => <div key={`e-${i}`} className="h-9" />)}
             {Array.from({ length: daysInMonth }).map((_, i) => {
               const day = i + 1;
               const ev = byDate.get(keyFor(day));
@@ -79,7 +79,7 @@ export default function EventsCalendar() {
                   data-cursor={ev ? "view" : undefined}
                   aria-label={ev ? `${ev.title} on ${ev.date}` : undefined}
                   className={cn(
-                    "relative flex aspect-square flex-col items-center justify-center rounded-2xl text-sm transition-all duration-300",
+                    "relative flex h-9 flex-col items-center justify-center rounded-lg text-xs transition-all duration-300",
                     !ev && "text-ink-faint",
                     ev && !isSel && ev.type === "upcoming" && "bg-leaf/12 font-bold text-forest ring-1 ring-leaf/40 hover:-translate-y-0.5 hover:bg-leaf/25 hover:shadow-lg",
                     ev && !isSel && ev.type === "past" && "bg-gold/12 font-semibold text-ink ring-1 ring-gold/40 hover:-translate-y-0.5 hover:bg-gold/25",
@@ -93,7 +93,7 @@ export default function EventsCalendar() {
             })}
           </div>
 
-          <div className="mt-6 flex items-center gap-5 border-t border-line pt-5 text-xs text-ink-soft">
+          <div className="mt-4 flex items-center gap-4 border-t border-line pt-3 text-xs text-ink-soft">
             <span className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-leaf ring-2 ring-leaf/30" /> Upcoming</span>
             <span className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-gold/80" /> Past</span>
             <span className="ml-auto hidden font-mono uppercase tracking-widest text-ink-faint sm:block">Hover a date</span>
@@ -101,43 +101,42 @@ export default function EventsCalendar() {
         </div>
       </div>
 
-      {/* Detail + upcoming rail */}
-      <div className="flex flex-col gap-6 lg:col-span-5">
-        {selected && (
-          <article className="group overflow-hidden rounded-[2rem] border border-line bg-paper-2">
-            <div className="relative aspect-[16/10] overflow-hidden">
-              <Placeholder seed={selected.id} label={selected.title} kind="scene" className="h-full w-full transition-transform duration-700 group-hover:scale-105" />
-              <div className="absolute inset-0 bg-gradient-to-t from-ink/50 to-transparent" />
-              <span className={cn("absolute left-4 top-4 rounded-full px-3 py-1 font-mono text-[0.6rem] uppercase tracking-widest", selected.type === "upcoming" ? "bg-leaf text-forest" : "bg-gold text-ink")}>{selected.type}</span>
-              <span className="absolute bottom-4 left-4 font-mono text-xs text-paper/90">{selected.date}</span>
-            </div>
-            <div className="flex flex-col gap-3 p-7">
-              <h4 className="font-display text-2xl text-ink">{selected.title}</h4>
-              <p className="text-sm leading-relaxed text-ink-soft">{selected.description}</p>
-              <div className="mt-1 flex flex-col gap-2 border-t border-line pt-4 text-sm text-ink-soft">
-                <span className="flex items-center gap-2"><Clock className="h-4 w-4 text-fern" /> {selected.time}</span>
-                <span className="flex items-center gap-2"><MapPin className="h-4 w-4 text-fern" /> {selected.location}</span>
-              </div>
-            </div>
-          </article>
-        )}
-
-        <div className="rounded-[2rem] border border-line bg-paper p-7">
-          <span className="font-mono text-xs uppercase tracking-widest text-fern">Next up</span>
-          <div className="mt-4 flex flex-col">
-            {upcoming.map((e) => (
-              <button key={e.id} onClick={() => setSelected(e)} data-cursor="view" className="group flex items-center justify-between gap-4 border-b border-line py-4 text-left last:border-0">
-                <div className="flex items-center gap-4">
-                  <span className="flex h-11 w-11 shrink-0 flex-col items-center justify-center rounded-xl bg-leaf/15 font-mono text-forest">
-                    <span className="text-sm font-bold leading-none">{e.date.slice(8)}</span>
-                    <span className="text-[0.55rem] uppercase leading-none">{MONTHS[Number(e.date.slice(5, 7)) - 1].slice(0, 3)}</span>
-                  </span>
-                  <span className="font-medium text-ink transition-colors group-hover:text-fern">{e.title}</span>
-                </div>
-                <ArrowUpRight className="h-4 w-4 shrink-0 text-ink-faint transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-fern" />
-              </button>
-            ))}
+      {/* Selected event detail */}
+      {selected && (
+        <article className="group flex flex-col overflow-hidden rounded-2xl border border-line bg-paper-2 lg:col-span-4">
+          <div className="relative aspect-[16/9] overflow-hidden">
+            <Placeholder seed={selected.id} label={selected.title} kind="scene" className="h-full w-full transition-transform duration-700 group-hover:scale-105" />
+            <div className="absolute inset-0 bg-gradient-to-t from-ink/50 to-transparent" />
+            <span className={cn("absolute left-3 top-3 rounded-full px-2.5 py-1 font-mono text-[0.55rem] uppercase tracking-widest", selected.type === "upcoming" ? "bg-leaf text-forest" : "bg-gold text-ink")}>{selected.type}</span>
+            <span className="absolute bottom-3 left-3 font-mono text-[0.7rem] text-paper/90">{selected.date}</span>
           </div>
+          <div className="flex flex-1 flex-col gap-2 p-4">
+            <h4 className="font-display text-lg leading-tight text-ink">{selected.title}</h4>
+            <p className="line-clamp-3 text-xs leading-relaxed text-ink-soft">{selected.description}</p>
+            <div className="mt-auto flex flex-col gap-1.5 border-t border-line pt-3 text-xs text-ink-soft">
+              <span className="flex items-center gap-2"><Clock className="h-3.5 w-3.5 text-fern" /> {selected.time}</span>
+              <span className="flex items-center gap-2"><MapPin className="h-3.5 w-3.5 text-fern" /> {selected.location}</span>
+            </div>
+          </div>
+        </article>
+      )}
+
+      {/* Next up rail */}
+      <div className="rounded-2xl border border-line bg-paper p-4 lg:col-span-3">
+        <span className="font-mono text-xs uppercase tracking-widest text-fern">Next up</span>
+        <div className="mt-2 flex flex-col">
+          {upcoming.map((e) => (
+            <button key={e.id} onClick={() => setSelected(e)} data-cursor="view" className="group flex items-center justify-between gap-3 border-b border-line py-2.5 text-left last:border-0">
+              <div className="flex items-center gap-3">
+                <span className="flex h-9 w-9 shrink-0 flex-col items-center justify-center rounded-lg bg-leaf/15 font-mono text-forest">
+                  <span className="text-xs font-bold leading-none">{e.date.slice(8)}</span>
+                  <span className="text-[0.5rem] uppercase leading-none">{MONTHS[Number(e.date.slice(5, 7)) - 1].slice(0, 3)}</span>
+                </span>
+                <span className="text-sm font-medium leading-tight text-ink transition-colors group-hover:text-fern">{e.title}</span>
+              </div>
+              <ArrowUpRight className="h-4 w-4 shrink-0 text-ink-faint transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-fern" />
+            </button>
+          ))}
         </div>
       </div>
 

@@ -46,16 +46,16 @@ export default function TeamScroll() {
   }, [pin]);
 
   const cards = coreTeam.map((m, i) => (
-    <article key={m.role} className="group flex w-[280px] shrink-0 flex-col gap-4 sm:w-[320px]">
-      <div className="relative aspect-[4/5] overflow-hidden rounded-3xl border border-line">
+    <article key={m.role} className="group flex w-[200px] shrink-0 flex-col gap-3 sm:w-[230px]">
+      <div className="relative aspect-[4/5] overflow-hidden rounded-2xl border border-line">
         <Placeholder seed={m.role} label={m.name} kind="person" className="h-full w-full transition-transform duration-700 group-hover:scale-105" />
-        <span className="absolute left-3 top-3 rounded-full bg-paper/90 px-2.5 py-1 font-mono text-[0.6rem] uppercase tracking-widest text-ink">{m.year}</span>
-        {!m.confirmed && <span className="absolute right-3 top-3"><Badge tone="ink">Seat filling</Badge></span>}
-        <span className="absolute bottom-3 right-3 font-mono text-xs text-paper/80">{String(i + 1).padStart(2, "0")}</span>
+        <span className="absolute left-2.5 top-2.5 rounded-full bg-paper/90 px-2 py-0.5 font-mono text-[0.55rem] uppercase tracking-widest text-ink">{m.year}</span>
+        {!m.confirmed && <span className="absolute right-2.5 top-2.5"><Badge tone="ink">Seat filling</Badge></span>}
+        <span className="absolute bottom-2.5 right-2.5 font-mono text-[0.7rem] text-paper/80">{String(i + 1).padStart(2, "0")}</span>
       </div>
       <div>
-        <h3 className="font-display text-2xl text-ink">{m.name}</h3>
-        <p className="text-sm text-fern">{m.role}</p>
+        <h3 className="font-display text-lg leading-tight text-ink">{m.name}</h3>
+        <p className="text-xs text-fern">{m.role}</p>
       </div>
     </article>
   ));
