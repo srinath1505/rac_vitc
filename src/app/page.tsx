@@ -1,4 +1,3 @@
-import { greenRotaractors } from "@/content/join";
 import IronhillHero from "@/components/sections/IronhillHero";
 import Stats from "@/components/sections/Stats";
 import Avenues from "@/components/sections/Avenues";
@@ -17,7 +16,6 @@ import SectionHeading from "@/components/ui/SectionHeading";
 import Reveal from "@/components/motion/Reveal";
 import ScrollMarquee from "@/components/motion/ScrollMarquee";
 import SectionDivider from "@/components/motion/SectionDivider";
-import CurtainWipe from "@/components/motion/CurtainWipe";
 import { ImageScatter } from "@/components/ui/ImageScatter";
 import { DiagonalCarousel } from "@/components/ui/DiagonalCarousel";
 import { AnimatedTooltip } from "@/components/ui/AnimatedTooltip";
@@ -60,9 +58,6 @@ export default function Home() {
       <section id="team">
         <TeamScroll />
       </section>
-
-      {/* Signature curtain wipe — a dramatic beat leading into Kadal Karai */}
-      <CurtainWipe />
 
       {/* PROJECTS — Kadal Karai cinematic + detail */}
       <section id="projects">
@@ -145,34 +140,27 @@ export default function Home() {
       {/* JOIN — Green Rotaractors */}
       <section id="join">
         <Section band="alt">
-          <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
-            <div className="lg:col-span-5">
-              <SectionHeading eyebrow="Green Rotaractors" number="07" title="Every journey begins here." />
-              <p className="mt-6 max-w-md text-ink-soft">
-                New here? A{" "}
-                <AnimatedTooltip variant="dori" content="Our newest members — you start here, learn the culture, join projects, and grow into leadership.">
-                  Green Rotaractor
-                </AnimatedTooltip>{" "}
-                is where it all begins.
-              </p>
-              <p className="mt-4 max-w-md text-ink-soft">{greenRotaractors.closing}</p>
-            </div>
-            <div className="lg:col-span-7">
-              <JoinJourney />
-            </div>
+          <div className="max-w-2xl">
+            <SectionHeading eyebrow="Green Rotaractors" number="07" title="Every journey begins here." />
+            <p className="mt-6 text-ink-soft">
+              New here? A{" "}
+              <AnimatedTooltip variant="dori" content="Our newest members — you start here, learn the culture, join projects, and grow into leadership.">
+                Green Rotaractor
+              </AnimatedTooltip>{" "}
+              is where it all begins — watch how far a single seed can grow.
+            </p>
           </div>
+          <JoinJourney />
         </Section>
         <RegistrationBlock />
       </section>
 
-      {/* PARTNER — sticks in place while FAQ slides over it (stacking moment) */}
-      <div id="partner" className="sticky top-0 z-0">
+      {/* PARTNER */}
+      <div id="partner">
         <PartnerTeaser />
       </div>
 
-      <div className="relative z-10 rounded-t-[3rem] bg-paper shadow-[0_-40px_80px_-40px_rgba(26,26,26,0.35)]">
-        <FAQ limit={6} />
-      </div>
+      <FAQ limit={6} />
     </>
   );
 }

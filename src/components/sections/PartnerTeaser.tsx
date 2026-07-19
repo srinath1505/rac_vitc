@@ -1,5 +1,3 @@
-"use client";
-
 import { partner } from "@/content/partner";
 import { partnerContact } from "@/content/site";
 import { stats } from "@/content/stats";
@@ -7,8 +5,6 @@ import Section from "@/components/ui/Section";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Button from "@/components/ui/Button";
 import Counter from "@/components/motion/Counter";
-import { gsap } from "@/lib/gsap";
-import { useGsapContext } from "@/hooks/useGsapContext";
 import { ArrowRight, Check, Mail, Phone, Megaphone, Leaf, Users, Sparkles } from "lucide-react";
 
 /** Reach counters — reuse the same curated numbers from the Stats section (§stats.ts). */
@@ -42,30 +38,10 @@ const PARTNERSHIP_TYPES = [
 ];
 
 /** Partner With Us — Home teaser (§5.12). An interactive pitch: reach
- *  counters, four partnership-type cards, and a compact gradient CTA. The
- *  content scales/dims slightly as the following FAQ section stacks over it
- *  (the section itself is made `sticky` by the page-level wrapper). */
+ *  counters, four partnership-type cards, and a compact gradient CTA. */
 export default function PartnerTeaser() {
-  const scope = useGsapContext(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    if (!window.matchMedia("(min-width: 1024px)").matches) return;
-    gsap.to(".partner-stack-inner", {
-      scale: 0.94,
-      filter: "brightness(0.92)",
-      ease: "none",
-      scrollTrigger: {
-        trigger: ".partner-stack-inner",
-        start: "top top",
-        end: "+=" + window.innerHeight * 0.6,
-        scrub: true,
-      },
-    });
-  });
-
   return (
-    <div ref={scope}>
     <Section>
-      <div className="partner-stack-inner">
       <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
         <div className="flex flex-col gap-6 lg:col-span-5">
           <SectionHeading
@@ -139,8 +115,6 @@ export default function PartnerTeaser() {
           </Button>
         </div>
       </div>
-      </div>
     </Section>
-    </div>
   );
 }
