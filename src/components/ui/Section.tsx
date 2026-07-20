@@ -21,7 +21,7 @@ export default function Section({
     <section
       id={id}
       className={cn(
-        "relative py-20 sm:py-28 lg:py-36",
+        "u-grain relative py-20 sm:py-28 lg:py-36",
         band === "alt" && "bg-paper-2",
         band === "ink" && "bg-ink text-paper",
         className

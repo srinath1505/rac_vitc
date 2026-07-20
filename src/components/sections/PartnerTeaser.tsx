@@ -5,6 +5,8 @@ import Section from "@/components/ui/Section";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Button from "@/components/ui/Button";
 import Counter from "@/components/motion/Counter";
+import Reveal from "@/components/motion/Reveal";
+import Tilt from "@/components/motion/Tilt";
 import { ArrowRight, Check, Mail, Phone, Megaphone, Leaf, Users, Sparkles } from "lucide-react";
 
 /** Reach counters — reuse the same curated numbers from the Stats section (§stats.ts). */
@@ -74,23 +76,24 @@ export default function PartnerTeaser() {
           </div>
         </div>
 
-        {/* Partnership-type cards */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:col-span-7">
+        {/* Partnership-type cards — staggered entrance + pointer tilt */}
+        <Reveal stagger={0.08} className="grid grid-cols-1 gap-4 [perspective:900px] sm:grid-cols-2 lg:col-span-7">
           {PARTNERSHIP_TYPES.map((t) => (
-            <div
-              key={t.title}
-              data-cursor="view"
-              className="group relative flex flex-col gap-3 overflow-hidden rounded-2xl border border-line bg-paper-2 p-6 transition-all duration-500 hover:-translate-y-1 hover:border-fern hover:shadow-[0_30px_60px_-35px_rgba(10,89,51,0.5)]"
-            >
-              <span className="absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-gradient-to-r from-fern to-leaf transition-transform duration-500 group-hover:scale-x-100" />
-              <span className="flex h-11 w-11 items-center justify-center rounded-full bg-fern/10 text-fern transition-colors duration-500 group-hover:bg-fern group-hover:text-white">
-                <t.icon className="h-5 w-5" />
-              </span>
-              <h3 className="font-display text-lg text-ink">{t.title}</h3>
-              <p className="text-sm leading-relaxed text-ink-soft">{t.body}</p>
-            </div>
+            <Tilt key={t.title} max={5}>
+              <div
+                data-cursor="view"
+                className="group relative flex h-full flex-col gap-3 overflow-hidden rounded-2xl border border-line bg-paper-2 p-6 transition-all duration-500 hover:-translate-y-1 hover:border-fern hover:shadow-[0_30px_60px_-35px_rgba(10,89,51,0.5)]"
+              >
+                <span className="absolute inset-x-0 bottom-0 h-1 origin-left scale-x-0 bg-gradient-to-r from-fern to-leaf transition-transform duration-500 group-hover:scale-x-100" />
+                <span className="flex h-11 w-11 items-center justify-center rounded-full bg-fern/10 text-fern transition-colors duration-500 group-hover:bg-fern group-hover:text-white">
+                  <t.icon className="h-5 w-5" />
+                </span>
+                <h3 className="font-display text-lg text-ink">{t.title}</h3>
+                <p className="text-sm leading-relaxed text-ink-soft">{t.body}</p>
+              </div>
+            </Tilt>
           ))}
-        </div>
+        </Reveal>
       </div>
 
       {/* Why partner — compact pill row */}

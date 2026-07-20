@@ -6,6 +6,7 @@ import { ChevronLeft, ChevronRight, Clock, MapPin, ArrowUpRight } from "lucide-r
 import { events } from "@/content/events";
 import type { ClubEvent } from "@/content/types";
 import Placeholder from "@/components/ui/Placeholder";
+import Parallax from "@/components/motion/Parallax";
 import EventPopover from "@/components/sections/EventPopover";
 import { cn, clamp } from "@/lib/utils";
 
@@ -105,7 +106,9 @@ export default function EventsCalendar() {
       {selected && (
         <article className="group flex flex-col overflow-hidden rounded-2xl border border-line bg-paper-2 lg:col-span-4">
           <div className="relative aspect-[16/9] overflow-hidden">
-            <Placeholder seed={selected.id} label={selected.title} kind="scene" className="h-full w-full transition-transform duration-700 group-hover:scale-105" />
+            <Parallax amount={8} className="!absolute inset-x-0 -inset-y-[16%]">
+              <Placeholder seed={selected.id} label={selected.title} kind="scene" className="h-full w-full transition-transform duration-700 group-hover:scale-105" />
+            </Parallax>
             <div className="absolute inset-0 bg-gradient-to-t from-ink/50 to-transparent" />
             <span className={cn("absolute left-3 top-3 rounded-full px-2.5 py-1 font-mono text-[0.55rem] uppercase tracking-widest", selected.type === "upcoming" ? "bg-leaf text-forest" : "bg-gold text-ink")}>{selected.type}</span>
             <span className="absolute bottom-3 left-3 font-mono text-[0.7rem] text-paper/90">{selected.date}</span>

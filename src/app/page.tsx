@@ -14,12 +14,11 @@ import FAQ from "@/components/sections/FAQ";
 import Section from "@/components/ui/Section";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Reveal from "@/components/motion/Reveal";
-import ScrollMarquee from "@/components/motion/ScrollMarquee";
-import SectionDivider from "@/components/motion/SectionDivider";
+import CreedBand from "@/components/sections/CreedBand";
 import { ImageScatter } from "@/components/ui/ImageScatter";
 import { DiagonalCarousel } from "@/components/ui/DiagonalCarousel";
-import { AnimatedTooltip } from "@/components/ui/AnimatedTooltip";
 import Button from "@/components/ui/Button";
+import { greenRotaractors } from "@/content/join";
 import { scatterSets } from "@/content/gallery";
 import { events, nextKadalKaraiEvent } from "@/content/events";
 import { signatureProject } from "@/content/projects";
@@ -40,16 +39,8 @@ export default function Home() {
         <GrowthTree />
       </Section>
 
-      {/* Scroll-driven marquee transition */}
-      <div className="border-y border-line bg-ink py-8 text-paper sm:py-12">
-        <ScrollMarquee>
-          {Array.from({ length: 4 }).map((_, i) => (
-            <span key={i} className="u-display flex items-center gap-8 pr-8 text-[clamp(2.25rem,7vw,6rem)] text-paper">
-              Service Above Self <span className="text-leaf">✦</span> Leadership Beyond Limits <span className="text-leaf">✦</span>
-            </span>
-          ))}
-        </ScrollMarquee>
-      </div>
+      {/* Dark editorial creed band (replaces the old marquee) */}
+      <CreedBand />
 
       {/* AVENUES */}
       <Avenues />
@@ -85,7 +76,7 @@ export default function Home() {
                       {formatEventDate(nextKadalKaraiEvent.date)} · {nextKadalKaraiEvent.time} · {nextKadalKaraiEvent.location}
                     </span>
                   </div>
-                  <Button href="/#events" variant="outline" size="sm" className="sm:ml-auto">
+                  <Button href="/#events" variant="outline" size="sm" magnetic className="sm:ml-auto">
                     Reserve your spot <ArrowRight className="h-4 w-4" />
                   </Button>
                 </div>
@@ -120,8 +111,6 @@ export default function Home() {
         </Reveal>
       </Section>
 
-      <SectionDivider tone="paper" />
-
       {/* GALLERY — image-scatter preview + polaroid wall */}
       <Section id="gallery" container={false}>
         <div className="u-container">
@@ -135,22 +124,17 @@ export default function Home() {
         </div>
       </Section>
 
-      <SectionDivider tone="paper-2" />
-
       {/* JOIN — Green Rotaractors */}
       <section id="join">
         <Section band="alt">
           <div className="max-w-2xl">
             <SectionHeading eyebrow="Green Rotaractors" number="07" title="Every journey begins here." />
-            <p className="mt-6 text-ink-soft">
-              New here? A{" "}
-              <AnimatedTooltip variant="dori" content="Our newest members — you start here, learn the culture, join projects, and grow into leadership.">
-                Green Rotaractor
-              </AnimatedTooltip>{" "}
-              is where it all begins — watch how far a single seed can grow.
-            </p>
+            <p className="mt-6 text-ink-soft">{greenRotaractors.intro}</p>
           </div>
-          <JoinJourney />
+
+          <Reveal>
+            <JoinJourney />
+          </Reveal>
         </Section>
         <RegistrationBlock />
       </section>

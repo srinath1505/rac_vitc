@@ -221,12 +221,15 @@ export default function GalleryWall() {
             Pinned memories
           </span>
 
-          {/* Collage — masonry columns for an organic scrapbook layout */}
+          {/* Collage — masonry columns for an organic scrapbook layout, with a
+              small seeded top-offset per card so they sit slightly off, like a
+              real hand-pinned board rather than a rigid grid. */}
           <div ref={scope} className="columns-1 gap-6 [column-fill:_balance] sm:columns-2 lg:columns-3">
             {visibleItems.map((item) => {
               const d = decor[item.id];
+              const offset = Math.round(seededRandom(item.id + "o") * 22);
               return (
-                <div key={item.id} className="mb-9 break-inside-avoid">
+                <div key={item.id} className="break-inside-avoid" style={{ marginBottom: "2.25rem", marginTop: offset }}>
                   <button
                     onClick={(e) => open(item, e.currentTarget)}
                     data-cursor="view"

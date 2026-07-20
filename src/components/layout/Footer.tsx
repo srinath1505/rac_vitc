@@ -4,6 +4,8 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { site, socials, nav } from "@/content/site";
 import MagneticButton from "@/components/motion/MagneticButton";
+import Reveal from "@/components/motion/Reveal";
+import SplitReveal from "@/components/motion/SplitReveal";
 import { scrollToSection } from "@/lib/lenis";
 import { cn } from "@/lib/utils";
 
@@ -63,13 +65,13 @@ export default function Footer() {
         {/* Big CTAs */}
         <div className="flex flex-col gap-6 lg:col-span-7">
           <span className="u-eyebrow text-leaf">Let&apos;s build impact</span>
-          <div className="flex flex-col gap-2">
+          <Reveal stagger={0.09} className="flex flex-col gap-2">
             <BigLink href="/#partner" section="#partner">Partner With Us</BigLink>
             <BigLink href="/contact">Contact Us</BigLink>
             <BigLink href={`mailto:${site.email}`} external>
               Email
             </BigLink>
-          </div>
+          </Reveal>
         </div>
 
         {/* Contact details */}
@@ -108,6 +110,13 @@ export default function Footer() {
             />
           </div>
         </div>
+      </div>
+
+      {/* Oversized brand wordmark — unmasks as the footer scrolls into view */}
+      <div className="relative z-10 overflow-hidden px-[clamp(1.25rem,5vw,6rem)] pb-4">
+        <SplitReveal as="div" type="chars" stagger={0.03} className="u-display select-none text-center leading-[0.78] text-white/[0.06]" >
+          <span className="block text-[clamp(3.5rem,21vw,18rem)]">ROTARACT</span>
+        </SplitReveal>
       </div>
 
       {/* Bottom bar */}
