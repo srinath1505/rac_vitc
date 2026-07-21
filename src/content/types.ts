@@ -29,6 +29,10 @@ export interface Avenue {
   title: string;
   body: string;
   focusAreas: string[];
+  /** Longer write-up shown in the click-to-open detail modal. */
+  detail: string[];
+  /** Concrete "what we do" bullets for the detail modal. */
+  whatWeDo: string[];
 }
 
 export interface Award {

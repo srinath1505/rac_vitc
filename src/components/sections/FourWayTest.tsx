@@ -20,9 +20,11 @@ export default function FourWayTest() {
     const cards = gsap.utils.toArray<HTMLElement>(".fw-card");
     cards.forEach((card, i) => {
       if (i === cards.length - 1) return;
+      // Note: no CSS `filter` here — an SVG-filter grain background (u-grain on
+      // Section) compositing with a CSS-filtered sticky card renders black in
+      // Chrome. The scale alone gives the stacked-depth effect.
       gsap.to(card, {
         scale: 0.92,
-        filter: "brightness(0.94)",
         ease: "none",
         scrollTrigger: {
           trigger: card,

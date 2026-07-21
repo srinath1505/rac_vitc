@@ -242,6 +242,16 @@ html.lenis body {
   100% { transform: rotate(0deg); }
 }
 
+/* Preloader — slow-drifting aurora blobs behind the intro. */
+@keyframes pl-aurora-a {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(9%, -7%) scale(1.18); }
+}
+@keyframes pl-aurora-b {
+  0%, 100% { transform: translate(0, 0) scale(1.12); }
+  50% { transform: translate(-11%, 9%) scale(0.94); }
+}
+
 /* Green Rotaractors — drifting petals rising around the growing plant. */
 @keyframes jj-rise {
   0% { transform: translateY(10px) translateX(0) rotate(0deg); opacity: 0; }

@@ -1,15 +1,23 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowUpRight, ExternalLink } from "lucide-react";
+import { ArrowUpRight, Clock, LogIn, Sparkles } from "lucide-react";
 import { greenRotaractors } from "@/content/join";
 import { site } from "@/content/site";
 import Button from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
 
+const LAUNCH_POINTS = [
+  { icon: Clock, text: "Takes about 2 minutes to complete." },
+  { icon: LogIn, text: "You'll sign in with your Google account (VIT email preferred)." },
+  { icon: Sparkles, text: "We'll follow up with orientation details soon after." },
+];
+
 /**
- * Green Rotaractor registration (§5.10). The Google Form opens in a slide-in
- * modal rather than a bare embed; a new-tab fallback covers frame-blocking.
+ * Green Rotaractor registration (§5.10). The club's Google Form is sign-in
+ * restricted, so it can't be embedded in an iframe (Google blocks framing of
+ * its auth pages). Instead a branded "launch" modal sets expectations and opens
+ * the form in a new tab, where sign-in works reliably.
  */
 export default function RegistrationBlock() {
   const [open, setOpen] = useState(false);
@@ -34,33 +42,50 @@ export default function RegistrationBlock() {
           {greenRotaractors.ctaTitle}
         </h2>
         <p className="max-w-2xl text-lg text-white/85">{greenRotaractors.ctaBody}</p>
-        <div className="mt-2 flex flex-col gap-3 sm:flex-row">
+        <div className="mt-2">
           <Button onClick={() => setOpen(true)} size="lg" variant="gold" magnetic cursor="join">
-            Open registration form <ArrowUpRight className="h-5 w-5" />
-          </Button>
-          <Button href={site.registrationForm} external size="lg" variant="ink">
-            Open in new tab <ExternalLink className="h-4 w-4" />
+            Register now <ArrowUpRight className="h-5 w-5" />
           </Button>
         </div>
       </div>
 
-      <Modal open={open} onClose={() => setOpen(false)} title="Green Rotaractor Registration" variant="side">
-        <div className="flex flex-col gap-4">
-          <p className="text-sm text-ink-soft">
-            Fill in the form below to begin your Rotaract journey. Trouble loading?{" "}
-            <a href={site.registrationForm} target="_blank" rel="noopener noreferrer" className="text-fern underline">
-              open it in a new tab
-            </a>
-            .
-          </p>
-          <div className="h-[70vh] w-full overflow-hidden rounded-2xl border border-line">
-            <iframe
-              title="Green Rotaractor Registration Form"
-              src={site.registrationForm}
-              className="h-full w-full"
-              loading="lazy"
-            />
+      {/* Branded launch modal — sets expectations, then opens the form in a new tab */}
+      <Modal open={open} onClose={() => setOpen(false)} title="Become a Green Rotaractor" variant="center" className="max-w-lg">
+        <div className="flex flex-col items-center gap-6 text-center">
+          <span className="relative flex h-16 w-16 items-center justify-center rounded-full bg-fern/10 text-3xl">
+            🌱
+            <span className="absolute inset-0 rounded-full ring-2 ring-fern/20" />
+          </span>
+
+          <div>
+            <h3 className="font-display text-2xl text-ink">You&rsquo;re one step away.</h3>
+            <p className="mt-2 text-ink-soft">The registration form opens in a new tab — here&rsquo;s what to expect.</p>
           </div>
+
+          <ul className="flex w-full flex-col gap-3 text-left">
+            {LAUNCH_POINTS.map(({ icon: Icon, text }) => (
+              <li key={text} className="flex items-start gap-3 rounded-2xl border border-line bg-paper-2 p-4">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-fern/10 text-fern">
+                  <Icon className="h-4 w-4" />
+                </span>
+                <span className="pt-1 text-sm text-ink-soft">{text}</span>
+              </li>
+            ))}
+          </ul>
+
+          <Button
+            href={site.registrationForm}
+            external
+            onClick={() => setOpen(false)}
+            size="lg"
+            variant="primary"
+            magnetic
+            cursor="join"
+            className="w-full justify-center"
+          >
+            Open the registration form <ArrowUpRight className="h-5 w-5" />
+          </Button>
+          <p className="font-mono text-[0.65rem] uppercase tracking-widest text-ink-faint">Opens Google Forms in a new tab</p>
         </div>
       </Modal>
     </section>

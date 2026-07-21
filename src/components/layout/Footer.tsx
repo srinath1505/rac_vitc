@@ -5,7 +5,6 @@ import { ArrowUpRight } from "lucide-react";
 import { site, socials, nav } from "@/content/site";
 import MagneticButton from "@/components/motion/MagneticButton";
 import Reveal from "@/components/motion/Reveal";
-import SplitReveal from "@/components/motion/SplitReveal";
 import { scrollToSection } from "@/lib/lenis";
 import { cn } from "@/lib/utils";
 
@@ -112,18 +111,13 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Oversized brand wordmark — unmasks as the footer scrolls into view */}
-      <div className="relative z-10 overflow-hidden px-[clamp(1.25rem,5vw,6rem)] pb-4">
-        <SplitReveal as="div" type="chars" stagger={0.03} className="u-display select-none text-center leading-[0.78] text-white/[0.06]" >
-          <span className="block text-[clamp(3.5rem,21vw,18rem)]">ROTARACT</span>
-        </SplitReveal>
-      </div>
-
       {/* Bottom bar */}
       <div className="relative z-10 border-t border-white/10">
         <div className="u-container flex flex-col items-center justify-between gap-4 py-6 text-xs text-white/40 sm:flex-row">
           <span>© {year} {site.name}. Service Above Self.</span>
-          <span className="font-mono uppercase tracking-widest">{site.district} · Sponsored by {site.parentClub}</span>
+          <span className="font-mono uppercase tracking-widest">
+            Made by <span className="font-semibold text-leaf">Arctorque</span>
+          </span>
           <div className="flex gap-4">
             {nav.slice(0, 4).map((n) => {
               const href = n.target.startsWith("#") ? `/${n.target}` : n.target;

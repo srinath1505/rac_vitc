@@ -64,7 +64,11 @@ export default function IronhillHero() {
     const ctx = gsap.context(() => {
       gsap.to(".ih-twig-left", { yPercent: -70, ease: "none", scrollTrigger: { trigger: heroRef.current, start: "top top", end: "bottom top", scrub: true } });
       gsap.to(".ih-twig-right", { yPercent: -95, ease: "none", scrollTrigger: { trigger: heroRef.current, start: "top top", end: "bottom top", scrub: true } });
-      const run = () => gsap.from(".ih-fade", { y: 26, opacity: 0, duration: 1, ease: EASE.out, stagger: 0.12, delay: 0.15 });
+      const run = () => {
+        const targets = heroRef.current?.querySelectorAll(".ih-fade");
+        if (!targets || !targets.length) return; // hero unmounted / reverted — skip
+        gsap.from(targets, { y: 26, opacity: 0, duration: 1, ease: EASE.out, stagger: 0.12, delay: 0.15 });
+      };
       if (isIntroDone()) run();
       else { window.addEventListener("preloader:done", run, { once: true }); cleanup = () => window.removeEventListener("preloader:done", run); }
     }, heroRef);

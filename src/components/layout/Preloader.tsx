@@ -6,9 +6,13 @@ import { useIsomorphicLayoutEffect } from "@/hooks/useIsomorphicLayoutEffect";
 import { stopScroll, startScroll } from "@/lib/lenis";
 import { setIntroDone } from "@/lib/intro";
 import { site } from "@/content/site";
-import { sceneUrl } from "@/lib/utils";
 
-const IMAGE_SEEDS = ["preloader-1", "preloader-2", "preloader-3", "preloader-4"];
+const LOGOS = [
+  "/assets/rotary_logo.png",
+  "/assets/rotaract_logo.png",
+  "/assets/vit_logo.png",
+  "/assets/racvitc_logo.png",
+];
 const HEADLINE = "Rotaract Club of VITC";
 // Greedily matched, in order, against HEADLINE's chars — "RAC" falls out of
 // "ROTARACT" itself (R-o-t-A-r-a-C-t), then "VITC" closes it out. Chosen so
@@ -101,14 +105,18 @@ export default function Preloader() {
         .to(barRef.current, { scaleX: 0, duration: s(0.35), ease: "power3.in" })
         .addLabel("imagesIn", `start+=${s(0.25)}`);
 
+      // Gap between each image wiping in. Bumped up so the logos reveal one
+      // at a time at a readable pace rather than flashing past.
+      const IMG_STAGGER = 0.34;
       images.forEach((img, i) => {
-        tl.to(img, { clipPath: CLIP_FULL, duration: s(0.45), ease: "hop" }, `imagesIn+=${s(i * 0.18)}`);
+        tl.to(img, { clipPath: CLIP_FULL, duration: s(0.7), ease: "hop" }, `imagesIn+=${s(i * IMG_STAGGER)}`);
       });
       imagesInner.forEach((inner, i) => {
-        tl.to(inner, { scale: 1, duration: s(0.6), ease: "hop" }, `imagesIn+=${s(i * 0.18)}`);
+        tl.to(inner, { scale: 1, duration: s(0.9), ease: "hop" }, `imagesIn+=${s(i * IMG_STAGGER)}`);
       });
 
-      tl.addLabel("textIn", `imagesIn+=${s(0.35)}`)
+      // Hold on the last logo before the text takes over.
+      tl.addLabel("textIn", `imagesIn+=${s(IMG_STAGGER * 3 + 0.55)}`)
         .to(lines, { yPercent: 0, duration: s(0.7), ease: "hop", stagger: s(0.06) }, "textIn")
         .to(chars, { yPercent: 0, duration: s(0.4), ease: "hop", stagger: s(0.015) }, `textIn+=${s(0.1)}`)
         .addLabel("hold", `textIn+=${s(0.65)}`)
@@ -178,20 +186,40 @@ export default function Preloader() {
       className="fixed inset-0 z-[9999] overflow-hidden bg-paper"
       style={{ clipPath: CLIP_FULL }}
     >
-      <div ref={barRef} className="absolute left-0 top-0 h-[3px] w-full origin-left scale-x-0 bg-fern" />
+      {/* Aurora mesh — soft green-gold blobs drifting behind the intro */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+        <span
+          className="absolute -left-[12%] top-[6%] h-[46vw] w-[46vw] rounded-full opacity-60 blur-[80px]"
+          style={{ background: "radial-gradient(circle, rgba(11,143,63,0.55), transparent 70%)", animation: "pl-aurora-a 9s ease-in-out infinite" }}
+        />
+        <span
+          className="absolute -right-[8%] top-[26%] h-[42vw] w-[42vw] rounded-full opacity-50 blur-[80px]"
+          style={{ background: "radial-gradient(circle, rgba(255,215,0,0.4), transparent 70%)", animation: "pl-aurora-b 11s ease-in-out infinite" }}
+        />
+        <span
+          className="absolute -bottom-[14%] left-[28%] h-[40vw] w-[40vw] rounded-full opacity-55 blur-[80px]"
+          style={{ background: "radial-gradient(circle, rgba(122,201,67,0.45), transparent 70%)", animation: "pl-aurora-a 13s ease-in-out infinite reverse" }}
+        />
+        <span
+          className="absolute left-[-6%] bottom-[20%] h-[30vw] w-[30vw] rounded-full opacity-40 blur-[70px]"
+          style={{ background: "radial-gradient(circle, rgba(10,89,51,0.4), transparent 70%)", animation: "pl-aurora-b 10s ease-in-out infinite" }}
+        />
+      </div>
+
+      <div ref={barRef} className="absolute left-0 top-0 z-10 h-[3px] w-full origin-left scale-x-0 bg-fern" />
 
       <div
         ref={imagesWrapRef}
         className="absolute left-1/2 top-[42%] h-40 w-40 -translate-x-1/2 -translate-y-1/2 overflow-hidden sm:h-64 sm:w-64"
         style={{ clipPath: CLIP_FULL }}
       >
-        {IMAGE_SEEDS.map((seed) => (
+        {LOGOS.map((src) => (
           <div
-            key={seed}
-            className="pl-img absolute inset-0 overflow-hidden"
+            key={src}
+            className="pl-img absolute inset-0 flex items-center justify-center overflow-hidden bg-paper"
             style={{ clipPath: CLIP_HIDDEN_BOTTOM }}
           >
-            <img src={sceneUrl(seed)} alt="" className="h-full w-full scale-[2] object-cover" />
+            <img src={src} alt="" className="h-full w-full scale-125 object-contain p-4" />
           </div>
         ))}
       </div>

@@ -46,6 +46,7 @@ export const nav: NavItem[] = [
   { label: "Team", target: "#team" },
   { label: "Events", target: "#events" },
   { label: "Gallery", target: "#gallery" },
+  { label: "FAQs", target: "#faq" },
   { label: "About", target: "/about" },
   { label: "Contact", target: "/contact" },
 ];

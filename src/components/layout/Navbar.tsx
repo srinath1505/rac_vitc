@@ -66,8 +66,8 @@ export default function Navbar() {
       >
         <nav className="u-container flex h-[var(--header-h)] items-center justify-between">
           <Link href="/" className={cn("group flex items-center gap-2.5 transition-colors", overDark ? "text-paper" : "text-ink")} data-cursor="home" aria-label={`${site.name} home`}>
-            <span className="relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-fern text-white transition-transform duration-500 group-hover:rotate-[360deg]">
-              <span className="font-display text-lg leading-none">R</span>
+            <span className="relative flex h-10 w-10 shrink-0 items-center justify-center transition-transform duration-500 group-hover:rotate-[360deg]">
+              <img src="/assets/racvitc_logo.png" alt="" className="h-full w-full object-contain" />
             </span>
             <span className="hidden flex-col leading-none sm:flex">
               <span className="font-display text-[1.15rem] font-semibold tracking-tight">Rotaract</span>
@@ -101,7 +101,7 @@ export default function Navbar() {
 
           <div className="flex items-center gap-3">
             <div className="hidden sm:block">
-              <Button href={onHome ? "/#join" : "/join"} onClick={onHome ? (() => scrollToSection("#join")) : undefined} size="sm" variant="primary" cursor="join" magnetic>
+              <Button href="/#join" onClick={onHome ? (() => scrollToSection("#join")) : undefined} size="sm" variant="primary" cursor="join" magnetic>
                 Join Us
               </Button>
             </div>
@@ -152,7 +152,7 @@ export default function Navbar() {
           })}
         </div>
         <div className="mt-auto pb-10">
-          <Button href={onHome ? "/#join" : "/join"} onClick={() => { if (onHome) scrollToSection("#join"); setOpen(false); }} variant="primary" size="lg" className="w-full">
+          <Button href="/#join" onClick={() => { if (onHome) scrollToSection("#join"); setOpen(false); }} variant="primary" size="lg" className="w-full">
             Become a Green Rotaractor
           </Button>
         </div>

@@ -4,6 +4,7 @@ import SectionHeading from "@/components/ui/SectionHeading";
 import SplitReveal from "@/components/motion/SplitReveal";
 import AvenuesAccordion from "@/components/sections/AvenuesAccordion";
 import InkFlowerField from "@/components/webgl/InkFlowerField";
+import { Sparkles } from "lucide-react";
 
 /**
  * Avenues of Service — an expanding accordion over the interactive ink-flower
@@ -17,6 +18,10 @@ export default function Avenues() {
 
       <div className="relative z-10 u-container">
       <SectionHeading eyebrow="Avenues of Service" number="02" title="One club. Many avenues." intro={avenuesIntro} />
+
+      <p className="mt-4 inline-flex items-center gap-1.5 font-mono text-[0.65rem] uppercase tracking-widest text-fern/70">
+        <Sparkles className="h-3 w-3" /> Psst — move or click around to watch it bloom
+      </p>
 
       <AvenuesAccordion />
 

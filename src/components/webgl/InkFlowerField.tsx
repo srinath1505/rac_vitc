@@ -124,10 +124,15 @@ const VERTEX = /* glsl */ `
 export default function InkFlowerField({
   background = "#fff6e3",
   dwell = 1000,
+  auto = false,
+  autoInterval = 1000,
 }: {
   background?: string;
   /** Milliseconds of hover stillness that counts as a click. */
   dwell?: number;
+  /** When true, ignore the cursor and bloom a random flower every `autoInterval` ms. */
+  auto?: boolean;
+  autoInterval?: number;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -152,7 +157,7 @@ export default function InkFlowerField({
     const shaderScene = new THREE.Scene();
     const mainScene = new THREE.Scene();
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-    const clock = new THREE.Clock();
+    const timer = new THREE.Timer();
 
     const size = () => ({ w: host.offsetWidth || window.innerWidth, h: host.offsetHeight || window.innerHeight });
     let { w, h } = size();
@@ -229,9 +234,18 @@ export default function InkFlowerField({
         if (armed) { spawn(p.x, p.y); armed = false; }
       }, dwell);
     };
-    host.addEventListener("click", onClick);
-    window.addEventListener("pointermove", onMove, { passive: true });
+    if (!auto) {
+      host.addEventListener("click", onClick);
+      window.addEventListener("pointermove", onMove, { passive: true });
+    }
     window.addEventListener("resize", resize);
+
+    // auto mode: bloom a random flower on an interval, no cursor needed
+    let autoTimer: ReturnType<typeof setInterval> | null = null;
+    if (auto) {
+      spawn(Math.random(), Math.random());
+      autoTimer = setInterval(() => spawn(Math.random(), Math.random()), autoInterval);
+    }
 
     // pause when the hero is off-screen / tab hidden
     let inView = true;
@@ -241,11 +255,12 @@ export default function InkFlowerField({
     let raf = 0;
     const render = () => {
       raf = requestAnimationFrame(render);
-      const delta = clock.getDelta();
+      timer.update();
+      const delta = timer.getDelta();
       if (!inView || document.hidden) return;
 
       shaderMaterial.uniforms.u_texture.value = rt[0].texture;
-      shaderMaterial.uniforms.u_time.value = clock.getElapsedTime() + 0.9;
+      shaderMaterial.uniforms.u_time.value = timer.getElapsed() + 0.9;
 
       if (pointer.clicked) {
         shaderMaterial.uniforms.u_point.value = new THREE.Vector2(pointer.x, 1 - pointer.y);
@@ -268,6 +283,7 @@ export default function InkFlowerField({
     return () => {
       cancelAnimationFrame(raf);
       if (stillTimer) clearTimeout(stillTimer);
+      if (autoTimer) clearInterval(autoTimer);
       host.removeEventListener("click", onClick);
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("resize", resize);
@@ -279,7 +295,7 @@ export default function InkFlowerField({
       bgMaterial.dispose();
       renderer.dispose();
     };
-  }, [background, dwell]);
+  }, [background, dwell, auto, autoInterval]);
 
   return <canvas ref={canvasRef} className="pointer-events-none absolute inset-0 h-full w-full" aria-hidden />;
 }
