@@ -107,12 +107,18 @@ export default function Preloader() {
 
       // Gap between each image wiping in. Bumped up so the logos reveal one
       // at a time at a readable pace rather than flashing past.
-      const IMG_STAGGER = 0.34;
+      const IMG_STAGGER = 0.5;
       images.forEach((img, i) => {
-        tl.to(img, { clipPath: CLIP_FULL, duration: s(0.7), ease: "hop" }, `imagesIn+=${s(i * IMG_STAGGER)}`);
+        tl.to(img, { clipPath: CLIP_FULL, duration: s(0.9), ease: "hop" }, `imagesIn+=${s(i * IMG_STAGGER)}`);
+        // The tiles are transparent (so the aurora shows through, no "box"),
+        // which means they'd stack. Wipe the previous logo out as this one
+        // wipes in so only one is ever visible.
+        if (i > 0) {
+          tl.to(images[i - 1], { clipPath: CLIP_HIDDEN_TOP, duration: s(0.9), ease: "hop" }, `imagesIn+=${s(i * IMG_STAGGER)}`);
+        }
       });
       imagesInner.forEach((inner, i) => {
-        tl.to(inner, { scale: 1, duration: s(0.9), ease: "hop" }, `imagesIn+=${s(i * IMG_STAGGER)}`);
+        tl.to(inner, { scale: 1, duration: s(1.1), ease: "hop" }, `imagesIn+=${s(i * IMG_STAGGER)}`);
       });
 
       // Hold on the last logo before the text takes over.
@@ -216,7 +222,7 @@ export default function Preloader() {
         {LOGOS.map((src) => (
           <div
             key={src}
-            className="pl-img absolute inset-0 flex items-center justify-center overflow-hidden bg-paper"
+            className="pl-img absolute inset-0 flex items-center justify-center overflow-hidden"
             style={{ clipPath: CLIP_HIDDEN_BOTTOM }}
           >
             <img src={src} alt="" className="h-full w-full scale-125 object-contain p-4" />
